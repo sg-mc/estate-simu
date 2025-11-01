@@ -19,7 +19,7 @@
         }
 
         .container {
-            max-width: 1200px;
+            max-width: 1400px;
             margin: 0 auto;
             background: white;
             border-radius: 20px;
@@ -30,15 +30,23 @@
         h1 {
             color: #333;
             text-align: center;
+            margin-bottom: 10px;
+            font-size: 2.2em;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #666;
             margin-bottom: 30px;
-            font-size: 2em;
+            font-size: 1.1em;
         }
 
         .input-section {
-            background: #f8f9fa;
-            padding: 30px;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            padding: 40px;
             border-radius: 15px;
             margin-bottom: 40px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
         }
 
         .input-group {
@@ -46,31 +54,35 @@
             align-items: center;
             gap: 15px;
             justify-content: center;
+            flex-wrap: wrap;
         }
 
         label {
-            font-size: 1.2em;
+            font-size: 1.3em;
             color: #555;
             font-weight: 600;
         }
 
         input[type="number"] {
-            padding: 15px 20px;
-            font-size: 1.5em;
-            border: 2px solid #667eea;
-            border-radius: 10px;
-            width: 200px;
+            padding: 18px 25px;
+            font-size: 1.8em;
+            border: 3px solid #667eea;
+            border-radius: 12px;
+            width: 250px;
             text-align: right;
+            font-weight: 700;
+            transition: all 0.3s;
         }
 
         input[type="number"]:focus {
             outline: none;
             border-color: #764ba2;
-            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+            box-shadow: 0 0 0 5px rgba(102, 126, 234, 0.2);
+            transform: scale(1.05);
         }
 
         .unit {
-            font-size: 1.3em;
+            font-size: 1.5em;
             color: #667eea;
             font-weight: 700;
         }
@@ -78,21 +90,23 @@
         button {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
-            padding: 15px 40px;
-            font-size: 1.2em;
+            padding: 18px 50px;
+            font-size: 1.3em;
             border: none;
-            border-radius: 10px;
+            border-radius: 12px;
             cursor: pointer;
-            transition: transform 0.2s, box-shadow 0.2s;
+            transition: all 0.3s;
+            font-weight: 700;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
         }
 
         button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.4);
+            transform: translateY(-3px);
+            box-shadow: 0 12px 30px rgba(102, 126, 234, 0.5);
         }
 
         button:active {
-            transform: translateY(0);
+            transform: translateY(-1px);
         }
 
         .results {
@@ -101,67 +115,211 @@
 
         .results.show {
             display: block;
+            animation: fadeIn 0.5s;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .price-display {
+            text-align: center;
+            font-size: 1.6em;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 25px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            font-weight: 700;
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.3);
         }
 
         .section-title {
             color: #667eea;
-            font-size: 1.5em;
-            margin: 30px 0 20px 0;
-            padding-bottom: 10px;
-            border-bottom: 3px solid #667eea;
+            font-size: 1.8em;
+            margin: 40px 0 20px 0;
+            padding: 15px 20px;
+            background: linear-gradient(to right, #f8f9fa 0%, white 100%);
+            border-left: 6px solid #667eea;
+            border-radius: 8px;
+            font-weight: 700;
+        }
+
+        .legend {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        }
+
+        .legend-title {
+            font-size: 1.2em;
+            font-weight: 700;
+            margin-bottom: 15px;
+            color: #333;
+        }
+
+        .legend-items {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 15px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .legend-color {
+            width: 30px;
+            height: 30px;
+            border-radius: 6px;
+            border: 2px solid #ddd;
+        }
+
+        .legend-text {
+            font-size: 1em;
+            font-weight: 600;
         }
 
         .table-container {
             overflow-x: auto;
             margin-bottom: 30px;
+            border-radius: 12px;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
         }
 
         table {
             width: 100%;
             border-collapse: collapse;
             background: white;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            border-radius: 10px;
-            overflow: hidden;
         }
 
         th {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
-            padding: 15px;
+            padding: 18px 12px;
             text-align: center;
-            font-weight: 600;
+            font-weight: 700;
+            font-size: 1.1em;
+            position: sticky;
+            top: 0;
+            z-index: 10;
         }
 
         td {
-            padding: 12px 15px;
+            padding: 15px 12px;
             text-align: right;
             border-bottom: 1px solid #eee;
+            font-size: 1.05em;
+            transition: all 0.2s;
         }
 
-        tr:hover {
-            background: #f8f9fa;
+        tr:hover td {
+            background: #f8f9fa !important;
         }
 
-        .loan-type-header {
-            background: #667eea !important;
-            font-size: 1.1em;
+        .loan-cell {
+            font-weight: 600;
+            border-left: 3px solid transparent;
+            transition: all 0.3s;
         }
 
-        .rental-income {
-            background: #e8f5e9;
+        .loan-cell:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            z-index: 5;
         }
 
-        .rental-income th {
+        .rental-row {
+            background: linear-gradient(to right, #e8f5e9 0%, #f1f8f2 100%);
+        }
+
+        .rental-row td {
+            font-size: 1.15em;
+            font-weight: 700;
+        }
+
+        .rental-income-table th {
             background: linear-gradient(135deg, #4caf50 0%, #388e3c 100%);
         }
 
-        .price-display {
-            text-align: center;
-            font-size: 1.3em;
-            color: #667eea;
-            margin-bottom: 20px;
-            font-weight: 600;
+        .ratio-badge {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 0.85em;
+            font-weight: 700;
+            margin-left: 8px;
+        }
+
+        .ratio-good {
+            background: #4caf50;
+            color: white;
+        }
+
+        .ratio-warning {
+            background: #ff9800;
+            color: white;
+        }
+
+        .ratio-danger {
+            background: #f44336;
+            color: white;
+        }
+
+        /* 利回り別の色分け */
+        .yield-7 {
+            background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%) !important;
+            border-left-color: #2196f3 !important;
+        }
+
+        .yield-7-5 {
+            background: linear-gradient(135deg, #f3e5f5 0%, #e1bee7 100%) !important;
+            border-left-color: #9c27b0 !important;
+        }
+
+        .yield-8 {
+            background: linear-gradient(135deg, #fff3e0 0%, #ffe0b2 100%) !important;
+            border-left-color: #ff9800 !important;
+        }
+
+        .yield-9 {
+            background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%) !important;
+            border-left-color: #4caf50 !important;
+        }
+
+        .yield-10 {
+            background: linear-gradient(135deg, #fce4ec 0%, #f8bbd0 100%) !important;
+            border-left-color: #e91e63 !important;
+        }
+
+        .info-box {
+            background: linear-gradient(135deg, #fff9c4 0%, #fff59d 100%);
+            padding: 20px;
+            border-radius: 12px;
+            margin: 20px 0;
+            border-left: 6px solid #fbc02d;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .info-box-title {
+            font-size: 1.2em;
+            font-weight: 700;
+            margin-bottom: 10px;
+            color: #f57f17;
+        }
+
+        .info-box-content {
+            color: #555;
+            line-height: 1.6;
         }
 
         @media (max-width: 768px) {
@@ -170,7 +328,7 @@
             }
 
             h1 {
-                font-size: 1.5em;
+                font-size: 1.6em;
             }
 
             .input-group {
@@ -182,44 +340,84 @@
             }
 
             table {
-                font-size: 0.9em;
+                font-size: 0.85em;
             }
 
             th, td {
-                padding: 8px 5px;
+                padding: 10px 6px;
+            }
+
+            .legend-items {
+                flex-direction: column;
             }
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>物件ローン・家賃収入シミュレーター</h1>
+        <h1>🏠 物件ローン・家賃収入シミュレーター</h1>
+        <p class="subtitle">賢い不動産投資のための収支シミュレーション</p>
 
         <div class="input-section">
             <div class="input-group">
-                <label for="propertyPrice">物件価格:</label>
+                <label for="propertyPrice">💰 物件価格:</label>
                 <input type="number" id="propertyPrice" placeholder="100" min="0" step="0.1">
                 <span class="unit">万円</span>
-                <button onclick="calculate()">計算する</button>
+                <button onclick="calculate()">📊 計算する</button>
             </div>
         </div>
 
         <div id="results" class="results">
             <div class="price-display">
-                物件価格: <span id="displayPrice"></span>
+                🏢 物件価格: <span id="displayPrice"></span>
             </div>
 
-            <h2 class="section-title">① ローン返済額（月々）</h2>
+            <div class="info-box">
+                <div class="info-box-title">💡 見方のガイド</div>
+                <div class="info-box-content">
+                    <strong>色付きのセル</strong>は、その返済額が対応する利回りの家賃収入の<strong>60%以下</strong>になる組み合わせです。<br>
+                    返済比率が低いほど、収支に余裕があり安全な投資と言えます。
+                </div>
+            </div>
+
+            <h2 class="section-title">📈 ① ローン返済額（月々）</h2>
+
+            <div class="legend">
+                <div class="legend-title">🎨 返済比率 60%以下となる家賃収入の利回り</div>
+                <div class="legend-items">
+                    <div class="legend-item">
+                        <div class="legend-color" style="background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%); border-color: #2196f3;"></div>
+                        <span class="legend-text">利回り 7%</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color" style="background: linear-gradient(135deg, #f3e5f5 0%, #e1bee7 100%); border-color: #9c27b0;"></div>
+                        <span class="legend-text">利回り 7.5%</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color" style="background: linear-gradient(135deg, #fff3e0 0%, #ffe0b2 100%); border-color: #ff9800;"></div>
+                        <span class="legend-text">利回り 8%</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color" style="background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%); border-color: #4caf50;"></div>
+                        <span class="legend-text">利回り 9%</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color" style="background: linear-gradient(135deg, #fce4ec 0%, #f8bbd0 100%); border-color: #e91e63;"></div>
+                        <span class="legend-text">利回り 10%</span>
+                    </div>
+                </div>
+            </div>
+
             <div class="table-container">
                 <table id="loanTable">
                     <thead>
                         <tr>
-                            <th>ローン種別</th>
-                            <th>金利</th>
-                            <th>15年</th>
-                            <th>20年</th>
-                            <th>25年</th>
-                            <th>30年</th>
+                            <th style="min-width: 140px;">ローン種別</th>
+                            <th style="min-width: 60px;">金利</th>
+                            <th style="min-width: 120px;">15年</th>
+                            <th style="min-width: 120px;">20年</th>
+                            <th style="min-width: 120px;">25年</th>
+                            <th style="min-width: 120px;">30年</th>
                         </tr>
                     </thead>
                     <tbody id="loanTableBody">
@@ -227,13 +425,14 @@
                 </table>
             </div>
 
-            <h2 class="section-title">② 家賃収入（月々）</h2>
+            <h2 class="section-title">💵 ② 家賃収入（月々）</h2>
             <div class="table-container">
-                <table class="rental-income">
+                <table class="rental-income-table">
                     <thead>
                         <tr>
-                            <th>利回り</th>
-                            <th>月々の家賃収入</th>
+                            <th style="min-width: 100px;">利回り</th>
+                            <th style="min-width: 150px;">月々の家賃収入</th>
+                            <th style="min-width: 150px;">年間家賃収入</th>
                         </tr>
                     </thead>
                     <tbody id="rentalTableBody">
@@ -244,6 +443,9 @@
     </div>
 
     <script>
+        // グローバル変数：家賃収入データ
+        let rentalIncomes = {};
+
         // ローン返済額を計算する関数（元利均等返済）
         function calculateMonthlyPayment(principal, annualRate, years) {
             const monthlyRate = annualRate / 100 / 12;
@@ -271,6 +473,38 @@
             return annualIncome / 12;
         }
 
+        // 返済比率を計算して色分けクラスを取得
+        function getColorClasses(monthlyPayment) {
+            const classes = [];
+            const yieldRates = [7, 7.5, 8, 9, 10];
+
+            yieldRates.forEach(yieldRate => {
+                const rentalIncome = rentalIncomes[yieldRate];
+                const ratio = monthlyPayment / rentalIncome;
+
+                if (ratio <= 0.6) {
+                    const className = 'yield-' + yieldRate.toString().replace('.', '-');
+                    classes.push(className);
+                }
+            });
+
+            return classes;
+        }
+
+        // 返済比率バッジを作成
+        function createRatioBadge(monthlyPayment, rentalIncome) {
+            const ratio = (monthlyPayment / rentalIncome) * 100;
+            let badgeClass = 'ratio-danger';
+
+            if (ratio <= 60) {
+                badgeClass = 'ratio-good';
+            } else if (ratio <= 80) {
+                badgeClass = 'ratio-warning';
+            }
+
+            return `<span class="ratio-badge ${badgeClass}">${ratio.toFixed(0)}%</span>`;
+        }
+
         function calculate() {
             const priceInput = document.getElementById('propertyPrice').value;
 
@@ -281,6 +515,12 @@
 
             const priceInManYen = parseFloat(priceInput);
             const priceInYen = priceInManYen * 10000;
+
+            // 家賃収入を事前計算
+            const yieldRates = [7, 7.5, 8, 9, 10];
+            yieldRates.forEach(yieldRate => {
+                rentalIncomes[yieldRate] = calculateRentalIncome(priceInManYen, yieldRate);
+            });
 
             // 結果表示エリアを表示
             document.getElementById('results').classList.add('show');
@@ -308,18 +548,26 @@
                     const loanTypeCell = document.createElement('td');
                     loanTypeCell.textContent = loanType.name;
                     loanTypeCell.style.textAlign = 'left';
-                    loanTypeCell.style.fontWeight = '600';
+                    loanTypeCell.style.fontWeight = '700';
+                    loanTypeCell.style.fontSize = '1.05em';
                     row.appendChild(loanTypeCell);
 
                     const rateCell = document.createElement('td');
                     rateCell.textContent = rate + '%';
                     rateCell.style.textAlign = 'center';
+                    rateCell.style.fontWeight = '700';
                     row.appendChild(rateCell);
 
                     years.forEach(year => {
                         const monthlyPayment = calculateMonthlyPayment(loanAmount, rate, year);
                         const cell = document.createElement('td');
-                        cell.textContent = formatNumber(monthlyPayment) + ' 円';
+                        cell.className = 'loan-cell';
+
+                        // 色分けクラスを追加
+                        const colorClasses = getColorClasses(monthlyPayment);
+                        colorClasses.forEach(cls => cell.classList.add(cls));
+
+                        cell.innerHTML = '<strong>' + formatNumber(monthlyPayment) + ' 円</strong>';
                         row.appendChild(cell);
                     });
 
@@ -331,27 +579,35 @@
             const rentalTableBody = document.getElementById('rentalTableBody');
             rentalTableBody.innerHTML = '';
 
-            const yieldRates = [7, 7.5, 8, 9, 10];
-
             yieldRates.forEach(yieldRate => {
                 const row = document.createElement('tr');
+                row.className = 'rental-row';
 
                 const yieldCell = document.createElement('td');
                 yieldCell.textContent = yieldRate + '%';
                 yieldCell.style.textAlign = 'center';
-                yieldCell.style.fontWeight = '600';
+                yieldCell.style.fontWeight = '700';
+                yieldCell.style.fontSize = '1.2em';
                 row.appendChild(yieldCell);
 
-                const rentalIncome = calculateRentalIncome(priceInManYen, yieldRate);
+                const rentalIncome = rentalIncomes[yieldRate];
                 const incomeCell = document.createElement('td');
-                incomeCell.textContent = formatNumber(rentalIncome) + ' 円';
+                incomeCell.innerHTML = '<strong>' + formatNumber(rentalIncome) + ' 円</strong>';
+                incomeCell.style.fontSize = '1.2em';
                 row.appendChild(incomeCell);
+
+                const annualIncomeCell = document.createElement('td');
+                annualIncomeCell.innerHTML = '<strong>' + formatNumber(rentalIncome * 12) + ' 円</strong>';
+                annualIncomeCell.style.fontSize = '1.1em';
+                row.appendChild(annualIncomeCell);
 
                 rentalTableBody.appendChild(row);
             });
 
             // 結果までスクロール
-            document.getElementById('results').scrollIntoView({ behavior: 'smooth', block: 'start' });
+            setTimeout(() => {
+                document.getElementById('results').scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }, 100);
         }
 
         // Enterキーで計算
@@ -359,6 +615,11 @@
             if (e.key === 'Enter') {
                 calculate();
             }
+        });
+
+        // ページ読み込み時にフォーカス
+        window.addEventListener('load', function() {
+            document.getElementById('propertyPrice').focus();
         });
     </script>
 </body>
