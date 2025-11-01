@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>物件ローン・家賃収入シミュレーター</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            padding: 40px;
+        }
+
+        h1 {
+            color: #333;
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 2em;
+        }
+
+        .input-section {
+            background: #f8f9fa;
+            padding: 30px;
+            border-radius: 15px;
+            margin-bottom: 40px;
+        }
+
+        .input-group {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            justify-content: center;
+        }
+
+        label {
+            font-size: 1.2em;
+            color: #555;
+            font-weight: 600;
+        }
+
+        input[type="number"] {
+            padding: 15px 20px;
+            font-size: 1.5em;
+            border: 2px solid #667eea;
+            border-radius: 10px;
+            width: 200px;
+            text-align: right;
+        }
+
+        input[type="number"]:focus {
+            outline: none;
+            border-color: #764ba2;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .unit {
+            font-size: 1.3em;
+            color: #667eea;
+            font-weight: 700;
+        }
+
+        button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px 40px;
+            font-size: 1.2em;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.4);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        .results {
+            display: none;
+        }
+
+        .results.show {
+            display: block;
+        }
+
+        .section-title {
+            color: #667eea;
+            font-size: 1.5em;
+            margin: 30px 0 20px 0;
+            padding-bottom: 10px;
+            border-bottom: 3px solid #667eea;
+        }
+
+        .table-container {
+            overflow-x: auto;
+            margin-bottom: 30px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        th {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px;
+            text-align: center;
+            font-weight: 600;
+        }
+
+        td {
+            padding: 12px 15px;
+            text-align: right;
+            border-bottom: 1px solid #eee;
+        }
+
+        tr:hover {
+            background: #f8f9fa;
+        }
+
+        .loan-type-header {
+            background: #667eea !important;
+            font-size: 1.1em;
+        }
+
+        .rental-income {
+            background: #e8f5e9;
+        }
+
+        .rental-income th {
+            background: linear-gradient(135deg, #4caf50 0%, #388e3c 100%);
+        }
+
+        .price-display {
+            text-align: center;
+            font-size: 1.3em;
+            color: #667eea;
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px;
+            }
+
+            h1 {
+                font-size: 1.5em;
+            }
+
+            .input-group {
+                flex-direction: column;
+            }
+
+            input[type="number"] {
+                width: 100%;
+            }
+
+            table {
+                font-size: 0.9em;
+            }
+
+            th, td {
+                padding: 8px 5px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>物件ローン・家賃収入シミュレーター</h1>
+
+        <div class="input-section">
+            <div class="input-group">
+                <label for="propertyPrice">物件価格:</label>
+                <input type="number" id="propertyPrice" placeholder="100" min="0" step="0.1">
+                <span class="unit">万円</span>
+                <button onclick="calculate()">計算する</button>
+            </div>
+        </div>
+
+        <div id="results" class="results">
+            <div class="price-display">
+                物件価格: <span id="displayPrice"></span>
+            </div>
+
+            <h2 class="section-title">① ローン返済額（月々）</h2>
+            <div class="table-container">
+                <table id="loanTable">
+                    <thead>
+                        <tr>
+                            <th>ローン種別</th>
+                            <th>金利</th>
+                            <th>15年</th>
+                            <th>20年</th>
+                            <th>25年</th>
+                            <th>30年</th>
+                        </tr>
+                    </thead>
+                    <tbody id="loanTableBody">
+                    </tbody>
+                </table>
+            </div>
+
+            <h2 class="section-title">② 家賃収入（月々）</h2>
+            <div class="table-container">
+                <table class="rental-income">
+                    <thead>
+                        <tr>
+                            <th>利回り</th>
+                            <th>月々の家賃収入</th>
+                        </tr>
+                    </thead>
+                    <tbody id="rentalTableBody">
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ローン返済額を計算する関数（元利均等返済）
+        function calculateMonthlyPayment(principal, annualRate, years) {
+            const monthlyRate = annualRate / 100 / 12;
+            const numberOfPayments = years * 12;
+
+            if (monthlyRate === 0) {
+                return principal / numberOfPayments;
+            }
+
+            const monthlyPayment = principal *
+                (monthlyRate * Math.pow(1 + monthlyRate, numberOfPayments)) /
+                (Math.pow(1 + monthlyRate, numberOfPayments) - 1);
+
+            return monthlyPayment;
+        }
+
+        // 数値を3桁区切りでフォーマット
+        function formatNumber(num) {
+            return Math.round(num).toLocaleString('ja-JP');
+        }
+
+        // 家賃収入を計算する関数
+        function calculateRentalIncome(propertyPrice, yieldRate) {
+            const annualIncome = propertyPrice * 10000 * (yieldRate / 100);
+            return annualIncome / 12;
+        }
+
+        function calculate() {
+            const priceInput = document.getElementById('propertyPrice').value;
+
+            if (!priceInput || priceInput <= 0) {
+                alert('物件価格を入力してください');
+                return;
+            }
+
+            const priceInManYen = parseFloat(priceInput);
+            const priceInYen = priceInManYen * 10000;
+
+            // 結果表示エリアを表示
+            document.getElementById('results').classList.add('show');
+            document.getElementById('displayPrice').textContent =
+                formatNumber(priceInManYen) + ' 万円 (' + formatNumber(priceInYen) + ' 円)';
+
+            // ローン返済額テーブルを生成
+            const loanTableBody = document.getElementById('loanTableBody');
+            loanTableBody.innerHTML = '';
+
+            const loanTypes = [
+                { name: 'フルローン (100%)', ratio: 1.0 },
+                { name: '95%ローン', ratio: 0.95 }
+            ];
+
+            const interestRates = [2.5, 3.0, 3.5];
+            const years = [15, 20, 25, 30];
+
+            loanTypes.forEach(loanType => {
+                const loanAmount = priceInYen * loanType.ratio;
+
+                interestRates.forEach(rate => {
+                    const row = document.createElement('tr');
+
+                    const loanTypeCell = document.createElement('td');
+                    loanTypeCell.textContent = loanType.name;
+                    loanTypeCell.style.textAlign = 'left';
+                    loanTypeCell.style.fontWeight = '600';
+                    row.appendChild(loanTypeCell);
+
+                    const rateCell = document.createElement('td');
+                    rateCell.textContent = rate + '%';
+                    rateCell.style.textAlign = 'center';
+                    row.appendChild(rateCell);
+
+                    years.forEach(year => {
+                        const monthlyPayment = calculateMonthlyPayment(loanAmount, rate, year);
+                        const cell = document.createElement('td');
+                        cell.textContent = formatNumber(monthlyPayment) + ' 円';
+                        row.appendChild(cell);
+                    });
+
+                    loanTableBody.appendChild(row);
+                });
+            });
+
+            // 家賃収入テーブルを生成
+            const rentalTableBody = document.getElementById('rentalTableBody');
+            rentalTableBody.innerHTML = '';
+
+            const yieldRates = [7, 7.5, 8, 9, 10];
+
+            yieldRates.forEach(yieldRate => {
+                const row = document.createElement('tr');
+
+                const yieldCell = document.createElement('td');
+                yieldCell.textContent = yieldRate + '%';
+                yieldCell.style.textAlign = 'center';
+                yieldCell.style.fontWeight = '600';
+                row.appendChild(yieldCell);
+
+                const rentalIncome = calculateRentalIncome(priceInManYen, yieldRate);
+                const incomeCell = document.createElement('td');
+                incomeCell.textContent = formatNumber(rentalIncome) + ' 円';
+                row.appendChild(incomeCell);
+
+                rentalTableBody.appendChild(row);
+            });
+
+            // 結果までスクロール
+            document.getElementById('results').scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+
+        // Enterキーで計算
+        document.getElementById('propertyPrice').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                calculate();
+            }
+        });
+    </script>
+</body>
+</html>
