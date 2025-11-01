@@ -280,10 +280,11 @@
         }
 
         /* 利回り別の色分け（JavaScriptで動的に設定） */
-        /* 色の定義:
-           利回り 7%: 青系 (#e3f2fd, border: #2196f3)
-           利回り 7.5%: 紫系 (#f3e5f5, border: #9c27b0)
-           利回り 8%: オレンジ系 (#fff3e0, border: #ff9800)
+        /* 色の定義（濃く、はっきりした色）:
+           利回り 7%: 濃い青 (#64B5F6, border: #1976D2)
+           利回り 7.5%: 濃い紫 (#BA68C8, border: #7B1FA2)
+           利回り 8%: 濃いオレンジ (#FFB74D, border: #F57C00)
+           複数該当時: ストライプパターンで表示
         */
 
         .info-box {
@@ -362,7 +363,10 @@
                 <div class="info-box-content">
                     <strong>色付きのセル</strong>は、その返済額が対応する利回りの家賃収入の<strong>50%以上60%以下</strong>になる組み合わせです。<br>
                     返済比率が50-60%の範囲にある場合、適切なキャッシュフローを確保できる投資と言えます。<br>
-                    <small>※複数の利回りに該当する場合は、グラデーションで表示されます。</small>
+                    <strong>• 青色:</strong> 利回り7%で返済比率50-60%<br>
+                    <strong>• 紫色:</strong> 利回り7.5%で返済比率50-60%<br>
+                    <strong>• オレンジ色:</strong> 利回り8%で返済比率50-60%<br>
+                    <small>※ 複数の利回りに該当する場合は、ストライプ模様で表示されます。</small>
                 </div>
             </div>
 
@@ -372,17 +376,20 @@
                 <div class="legend-title">🎨 返済比率 50%以上60%以下となる家賃収入の利回り</div>
                 <div class="legend-items">
                     <div class="legend-item">
-                        <div class="legend-color" style="background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%); border-color: #2196f3;"></div>
+                        <div class="legend-color" style="background: #64B5F6; border: 2px solid #1976D2;"></div>
                         <span class="legend-text">利回り 7%（返済比率 50-60%）</span>
                     </div>
                     <div class="legend-item">
-                        <div class="legend-color" style="background: linear-gradient(135deg, #f3e5f5 0%, #e1bee7 100%); border-color: #9c27b0;"></div>
+                        <div class="legend-color" style="background: #BA68C8; border: 2px solid #7B1FA2;"></div>
                         <span class="legend-text">利回り 7.5%（返済比率 50-60%）</span>
                     </div>
                     <div class="legend-item">
-                        <div class="legend-color" style="background: linear-gradient(135deg, #fff3e0 0%, #ffe0b2 100%); border-color: #ff9800;"></div>
+                        <div class="legend-color" style="background: #FFB74D; border: 2px solid #F57C00;"></div>
                         <span class="legend-text">利回り 8%（返済比率 50-60%）</span>
                     </div>
+                </div>
+                <div style="margin-top: 15px; font-size: 0.95em; color: #666;">
+                    <strong>※ 複数の利回りに該当する場合はストライプ模様で表示されます</strong>
                 </div>
             </div>
 
@@ -469,41 +476,56 @@
             return matchingYields;
         }
 
-        // 該当する利回りに応じて背景色を設定
+        // 該当する利回りに応じて背景色を設定（濃い色に変更）
         function getBackgroundStyle(matchingYields) {
             if (matchingYields.length === 0) {
                 return null;
             }
 
+            // より濃く、はっきりした色を使用
             const colorMap = {
-                7: { bg: '#e3f2fd', border: '#2196f3' },
-                7.5: { bg: '#f3e5f5', border: '#9c27b0' },
-                8: { bg: '#fff3e0', border: '#ff9800' }
+                7: { bg: '#64B5F6', bgDark: '#42A5F5', border: '#1976D2' },      // 濃い青
+                7.5: { bg: '#BA68C8', bgDark: '#AB47BC', border: '#7B1FA2' },    // 濃い紫
+                8: { bg: '#FFB74D', bgDark: '#FFA726', border: '#F57C00' }       // 濃いオレンジ
             };
 
             if (matchingYields.length === 1) {
-                // 1つの利回りのみ該当
+                // 1つの利回りのみ該当 - 単色背景
                 const color = colorMap[matchingYields[0]];
                 return {
-                    background: `linear-gradient(135deg, ${color.bg} 0%, ${color.bg} 100%)`,
-                    borderLeftColor: color.border
+                    background: color.bg,
+                    borderLeft: `5px solid ${color.border}`
                 };
             } else if (matchingYields.length === 2) {
-                // 2つの利回りが該当
+                // 2つの利回りが該当 - ストライプパターン
                 const color1 = colorMap[matchingYields[0]];
                 const color2 = colorMap[matchingYields[1]];
                 return {
-                    background: `linear-gradient(135deg, ${color1.bg} 0%, ${color2.bg} 100%)`,
-                    borderLeftColor: color1.border
+                    background: `repeating-linear-gradient(
+                        45deg,
+                        ${color1.bg},
+                        ${color1.bg} 10px,
+                        ${color2.bg} 10px,
+                        ${color2.bg} 20px
+                    )`,
+                    borderLeft: `5px solid ${color1.border}`
                 };
             } else {
-                // 3つ全ての利回りが該当
+                // 3つ全ての利回りが該当 - 3色ストライプ
                 const color1 = colorMap[7];
                 const color2 = colorMap[7.5];
                 const color3 = colorMap[8];
                 return {
-                    background: `linear-gradient(135deg, ${color1.bg} 0%, ${color2.bg} 50%, ${color3.bg} 100%)`,
-                    borderLeftColor: color1.border
+                    background: `repeating-linear-gradient(
+                        45deg,
+                        ${color1.bg},
+                        ${color1.bg} 8px,
+                        ${color2.bg} 8px,
+                        ${color2.bg} 16px,
+                        ${color3.bg} 16px,
+                        ${color3.bg} 24px
+                    )`,
+                    borderLeft: `5px solid ${color1.border}`
                 };
             }
         }
@@ -586,9 +608,7 @@
 
                         if (style) {
                             cell.style.background = style.background;
-                            cell.style.borderLeftColor = style.borderLeftColor;
-                            cell.style.borderLeftWidth = '4px';
-                            cell.style.borderLeftStyle = 'solid';
+                            cell.style.borderLeft = style.borderLeft;
                         }
 
                         cell.innerHTML = '<strong>' + formatNumber(monthlyPayment) + ' 円</strong>';
