@@ -361,11 +361,11 @@
             <div class="info-box">
                 <div class="info-box-title">💡 見方のガイド</div>
                 <div class="info-box-content">
-                    <strong>色付きのセル</strong>は、その返済額が対応する利回りの家賃収入の<strong>50%以上60%以下</strong>になる組み合わせです。<br>
-                    返済比率が50-60%の範囲にある場合、適切なキャッシュフローを確保できる投資と言えます。<br>
-                    <strong>• 青色:</strong> 利回り7%で返済比率50-60%<br>
-                    <strong>• 紫色:</strong> 利回り7.5%で返済比率50-60%<br>
-                    <strong>• オレンジ色:</strong> 利回り8%で返済比率50-60%<br>
+                    <strong>色付きのセル</strong>は、その返済額が対応する利回りの家賃収入の<strong>50%以上70%以下</strong>になる組み合わせです。<br>
+                    返済比率が50-70%の範囲にある場合、適切なキャッシュフローを確保できる投資と言えます。<br>
+                    <strong>• 青色:</strong> 利回り7%で返済比率50-70%<br>
+                    <strong>• 紫色:</strong> 利回り7.5%で返済比率50-70%<br>
+                    <strong>• オレンジ色:</strong> 利回り8%で返済比率50-70%<br>
                     <small>※ 複数の利回りに該当する場合は、ストライプ模様で表示されます。</small>
                 </div>
             </div>
@@ -373,19 +373,19 @@
             <h2 class="section-title">📈 ① ローン返済額（月々）</h2>
 
             <div class="legend">
-                <div class="legend-title">🎨 返済比率 50%以上60%以下となる家賃収入の利回り</div>
+                <div class="legend-title">🎨 返済比率 50%以上70%以下となる家賃収入の利回り</div>
                 <div class="legend-items">
                     <div class="legend-item">
                         <div class="legend-color" style="background: #64B5F6; border: 2px solid #1976D2;"></div>
-                        <span class="legend-text">利回り 7%（返済比率 50-60%）</span>
+                        <span class="legend-text">利回り 7%（返済比率 50-70%）</span>
                     </div>
                     <div class="legend-item">
                         <div class="legend-color" style="background: #BA68C8; border: 2px solid #7B1FA2;"></div>
-                        <span class="legend-text">利回り 7.5%（返済比率 50-60%）</span>
+                        <span class="legend-text">利回り 7.5%（返済比率 50-70%）</span>
                     </div>
                     <div class="legend-item">
                         <div class="legend-color" style="background: #FFB74D; border: 2px solid #F57C00;"></div>
-                        <span class="legend-text">利回り 8%（返済比率 50-60%）</span>
+                        <span class="legend-text">利回り 8%（返済比率 50-70%）</span>
                     </div>
                 </div>
                 <div style="margin-top: 15px; font-size: 0.95em; color: #666;">
@@ -458,7 +458,7 @@
             return annualIncome / 12;
         }
 
-        // 返済比率を計算して該当する利回りを取得（50%以上60%以下）
+        // 返済比率を計算して該当する利回りを取得（50%以上70%以下）
         function getMatchingYields(monthlyPayment) {
             const matchingYields = [];
             const yieldRates = [7, 7.5, 8];  // 7%, 7.5%, 8%のみ対象
@@ -467,8 +467,8 @@
                 const rentalIncome = rentalIncomes[yieldRate];
                 const ratio = monthlyPayment / rentalIncome;
 
-                // 返済比率が50%以上60%以下の場合に該当
-                if (ratio >= 0.5 && ratio <= 0.6) {
+                // 返済比率が50%以上70%以下の場合に該当
+                if (ratio >= 0.5 && ratio <= 0.7) {
                     matchingYields.push(yieldRate);
                 }
             });
