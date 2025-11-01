@@ -235,6 +235,11 @@
             transition: all 0.3s;
         }
 
+        /* フルローンと95%ローンの区切り線 */
+        .loan-type-separator td {
+            border-top: 4px solid #667eea !important;
+        }
+
         .loan-cell:hover {
             transform: scale(1.05);
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
@@ -579,6 +584,11 @@
 
                 interestRates.forEach(rate => {
                     const row = document.createElement('tr');
+
+                    // 95%ローンの最初の行に区切り線クラスを追加
+                    if (loanType.ratio === 0.95 && rate === 2.5) {
+                        row.className = 'loan-type-separator';
+                    }
 
                     const loanTypeCell = document.createElement('td');
                     loanTypeCell.textContent = loanType.name;
