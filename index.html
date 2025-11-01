@@ -281,10 +281,10 @@
 
         /* 利回り別の色分け（JavaScriptで動的に設定） */
         /* 色の定義（濃く、はっきりした色）:
-           利回り 7%: 濃い青 (#64B5F6, border: #1976D2)
-           利回り 7.5%: 濃い紫 (#BA68C8, border: #7B1FA2)
-           利回り 8%: 濃いオレンジ (#FFB74D, border: #F57C00)
-           複数該当時: ストライプパターンで表示
+           利回り 7%: 濃い青 (bg: #BBDEFB, border: #1976D2)
+           利回り 7.5%: 濃い紫 (bg: #E1BEE7, border: #7B1FA2)
+           利回り 8%: 濃いオレンジ (bg: #FFE0B2, border: #F57C00)
+           複数該当時: 複数色の枠で表示（左・上・右のボーダー）
         */
 
         .info-box {
@@ -366,7 +366,7 @@
                     <strong>• 青色:</strong> 利回り7%で返済比率50-70%<br>
                     <strong>• 紫色:</strong> 利回り7.5%で返済比率50-70%<br>
                     <strong>• オレンジ色:</strong> 利回り8%で返済比率50-70%<br>
-                    <small>※ 複数の利回りに該当する場合は、ストライプ模様で表示されます。</small>
+                    <small>※ 複数の利回りに該当する場合は、複数色の枠で表示されます（左・上・右の枠が異なる色）。</small>
                 </div>
             </div>
 
@@ -376,20 +376,21 @@
                 <div class="legend-title">🎨 返済比率 50%以上70%以下となる家賃収入の利回り</div>
                 <div class="legend-items">
                     <div class="legend-item">
-                        <div class="legend-color" style="background: #64B5F6; border: 2px solid #1976D2;"></div>
+                        <div class="legend-color" style="background: #BBDEFB; border: 3px solid #1976D2; border-left-width: 6px;"></div>
                         <span class="legend-text">利回り 7%（返済比率 50-70%）</span>
                     </div>
                     <div class="legend-item">
-                        <div class="legend-color" style="background: #BA68C8; border: 2px solid #7B1FA2;"></div>
+                        <div class="legend-color" style="background: #E1BEE7; border: 3px solid #7B1FA2; border-left-width: 6px;"></div>
                         <span class="legend-text">利回り 7.5%（返済比率 50-70%）</span>
                     </div>
                     <div class="legend-item">
-                        <div class="legend-color" style="background: #FFB74D; border: 2px solid #F57C00;"></div>
+                        <div class="legend-color" style="background: #FFE0B2; border: 3px solid #F57C00; border-left-width: 6px;"></div>
                         <span class="legend-text">利回り 8%（返済比率 50-70%）</span>
                     </div>
                 </div>
                 <div style="margin-top: 15px; font-size: 0.95em; color: #666;">
-                    <strong>※ 複数の利回りに該当する場合はストライプ模様で表示されます</strong>
+                    <strong>※ 複数の利回りに該当する場合は、複数色の枠で表示されます</strong><br>
+                    <small>（2色該当: 左+上の枠、3色該当: 左+上+右の枠）</small>
                 </div>
             </div>
 
@@ -476,7 +477,7 @@
             return matchingYields;
         }
 
-        // 該当する利回りに応じて背景色を設定（濃い色に変更）
+        // 該当する利回りに応じて背景色とボーダー色を設定
         function getBackgroundStyle(matchingYields) {
             if (matchingYields.length === 0) {
                 return null;
@@ -484,48 +485,43 @@
 
             // より濃く、はっきりした色を使用
             const colorMap = {
-                7: { bg: '#64B5F6', bgDark: '#42A5F5', border: '#1976D2' },      // 濃い青
-                7.5: { bg: '#BA68C8', bgDark: '#AB47BC', border: '#7B1FA2' },    // 濃い紫
-                8: { bg: '#FFB74D', bgDark: '#FFA726', border: '#F57C00' }       // 濃いオレンジ
+                7: { bg: '#64B5F6', bgLight: '#BBDEFB', border: '#1976D2' },      // 濃い青
+                7.5: { bg: '#BA68C8', bgLight: '#E1BEE7', border: '#7B1FA2' },    // 濃い紫
+                8: { bg: '#FFB74D', bgLight: '#FFE0B2', border: '#F57C00' }       // 濃いオレンジ
             };
 
             if (matchingYields.length === 1) {
-                // 1つの利回りのみ該当 - 単色背景
+                // 1つの利回りのみ該当 - 単色背景 + 単色ボーダー
                 const color = colorMap[matchingYields[0]];
                 return {
-                    background: color.bg,
-                    borderLeft: `5px solid ${color.border}`
+                    background: color.bgLight,
+                    borderLeft: `6px solid ${color.border}`,
+                    borderTop: 'none',
+                    borderRight: 'none',
+                    borderBottom: 'none'
                 };
             } else if (matchingYields.length === 2) {
-                // 2つの利回りが該当 - ストライプパターン
+                // 2つの利回りが該当 - 単色背景 + 2色のボーダー
                 const color1 = colorMap[matchingYields[0]];
                 const color2 = colorMap[matchingYields[1]];
                 return {
-                    background: `repeating-linear-gradient(
-                        45deg,
-                        ${color1.bg},
-                        ${color1.bg} 10px,
-                        ${color2.bg} 10px,
-                        ${color2.bg} 20px
-                    )`,
-                    borderLeft: `5px solid ${color1.border}`
+                    background: color1.bgLight,
+                    borderLeft: `6px solid ${color1.border}`,
+                    borderTop: `4px solid ${color2.border}`,
+                    borderRight: 'none',
+                    borderBottom: 'none'
                 };
             } else {
-                // 3つ全ての利回りが該当 - 3色ストライプ
+                // 3つ全ての利回りが該当 - 単色背景 + 3色のボーダー
                 const color1 = colorMap[7];
                 const color2 = colorMap[7.5];
                 const color3 = colorMap[8];
                 return {
-                    background: `repeating-linear-gradient(
-                        45deg,
-                        ${color1.bg},
-                        ${color1.bg} 8px,
-                        ${color2.bg} 8px,
-                        ${color2.bg} 16px,
-                        ${color3.bg} 16px,
-                        ${color3.bg} 24px
-                    )`,
-                    borderLeft: `5px solid ${color1.border}`
+                    background: color1.bgLight,
+                    borderLeft: `6px solid ${color1.border}`,
+                    borderTop: `4px solid ${color2.border}`,
+                    borderRight: `4px solid ${color3.border}`,
+                    borderBottom: 'none'
                 };
             }
         }
@@ -602,13 +598,16 @@
                         const cell = document.createElement('td');
                         cell.className = 'loan-cell';
 
-                        // 該当する利回りを取得して背景色を設定
+                        // 該当する利回りを取得して背景色とボーダーを設定
                         const matchingYields = getMatchingYields(monthlyPayment);
                         const style = getBackgroundStyle(matchingYields);
 
                         if (style) {
                             cell.style.background = style.background;
                             cell.style.borderLeft = style.borderLeft;
+                            cell.style.borderTop = style.borderTop;
+                            cell.style.borderRight = style.borderRight;
+                            cell.style.borderBottom = style.borderBottom;
                         }
 
                         cell.innerHTML = '<strong>' + formatNumber(monthlyPayment) + ' 円</strong>';
